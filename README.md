@@ -6,7 +6,10 @@ The testaustime plugin for Neovim, written in Lua this time
 
 You can use your favourite plugin manager, here's an example for [packer.nvim](https://github.com/wbthomason/packer.nvim)
 ```lua
-use { 'testaustime/testaustime.nvim', requires = { 'nvim-lua/plenary.nvim' } }
+use {
+    'testaustime/testaustime.nvim', requires = { 'nvim-lua/plenary.nvim' },
+    config = function() require'testaustime' end
+}
 ```
 
 These options are available

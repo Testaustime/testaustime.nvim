@@ -3,8 +3,6 @@ local Job = require("plenary.job")
 last_heartbeat = 0
 
 function sendheartbeat()
-    print("Trying to send balls")
-
     local now = tonumber(os.time(os.date("!*t")))
 
     if now-last_heartbeat < 30 then

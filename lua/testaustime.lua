@@ -42,23 +42,20 @@ function sendheartbeat()
     last_heartbeat = now
 
     local url = testaustime_url .. "/activity/update"
-    local useragent = testaustime_useragent
 
     return Job:new({
         command = "curl",
         args = { "-sd", heartbeattojson(hb), "-H", "Content-Type: application/json", "-H",
-            "Authorization: Bearer " .. testaustime_token, "-A", useragent, url },
+            "Authorization: Bearer " .. testaustime_token, "-A", testaustime_useragent, url },
     }):start()
 end
 
 function sendflush()
     local url = testaustime_url .. "/activity/flush"
 
-    local useragent = testaustime_useragent
-
     return Job:new({
         command = "curl",
-        args = { "-sX", "POST", "-H", "Authorization: Bearer " .. vim.g.testaustime_token, "-A", useragent, url }
+        args = { "-sX", "POST", "-H", "Authorization: Bearer " .. vim.g.testaustime_token, "-A", testaustime_useragent, url }
     }):start()
 end
 

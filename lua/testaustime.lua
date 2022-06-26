@@ -3,9 +3,9 @@ local Job = require("plenary.job")
 last_heartbeat = 0
 
 function sendheartbeat()
-    local now = tonumber(os.time(os.date("!*t")))
+    local now = os.time()
 
-    if now-last_heartbeat < 30 then
+    if now - last_heartbeat < 30 then
         return
     end
 
@@ -24,7 +24,8 @@ function sendheartbeat()
 
     return Job:new({
         command = "curl",
-        args = { "-sd", heartbeattojson(hb), "-H", "Content-Type: application/json", "-H", "Authorization: Bearer " .. vim.g.testaustime_token, "-A", useragent, url },
+        args = { "-sd", heartbeattojson(hb), "-H", "Content-Type: application/json", "-H",
+            "Authorization: Bearer " .. vim.g.testaustime_token, "-A", useragent, url },
     }):start()
 end
 
@@ -35,10 +36,11 @@ function sendflush()
 
     return Job:new({
         command = "curl",
-        args = { "-sX", "POST", "-H", "Authorization: Bearer " .. vim.g.testaustime_token, "-A", useragent, url}
+        args = { "-sX", "POST", "-H", "Authorization: Bearer " .. vim.g.testaustime_token, "-A", useragent, url }
     }):start()
 end
 
+---@return table
 function getheartbeatdata()
     return {
         language = vim.bo.filetype,
@@ -48,10 +50,12 @@ function getheartbeatdata()
     }
 end
 
+---@param hb table
+---@return string
 function heartbeattojson(hb)
     return string.format([[{"language":"%s","hostname":"%s","editor_name":"%s","project_name":"%s"}]],
         hb.language, hb.hostname, hb.editor_name, hb.project_name)
 end
 
-vim.api.nvim_create_autocmd({"CursorMoved"}, {callback = sendheartbeat})
-vim.api.nvim_create_autocmd({"ExitPre"}, {callback = sendflush})
+vim.api.nvim_create_autocmd({ "CursorMoved" }, { callback = sendheartbeat })
+vim.api.nvim_create_autocmd({ "ExitPre" }, { callback = sendflush })

@@ -2,6 +2,20 @@ local Job = require("plenary.job")
 
 last_heartbeat = 0
 
+---@return string
+function git_root()
+    local f = io.popen("git rev-parse --show-toplevel 2>/dev/null", 'r')
+    if f == nil then
+        return ""
+    end
+    local s = f:read('*l')
+    if s == nil then
+        return ""
+    end
+    f:close()
+    return s
+end
+
 function sendheartbeat()
     local now = os.time()
 
@@ -42,11 +56,20 @@ end
 
 ---@return table
 function getheartbeatdata()
+    local git_root_name = git_root()
+    local root = ""
+
+    if git_root_name == "" then
+        root = vim.fn.getcwd()
+    else
+        root = git_root_name
+    end
+
     return {
         language = vim.bo.filetype,
         hostname = vim.fn.hostname(),
         editor_name = vim.g.testaustime_editor_name or "Neovim",
-        project_name = vim.fn.getcwd():match("/([^/]+)$")
+        project_name = root:match("/([^/]+)$")
     }
 end
 

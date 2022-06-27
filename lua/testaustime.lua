@@ -4,7 +4,7 @@ local Job = require("plenary.job")
 
 local last_heartbeat = 0
 
-local testaustime_ignore = "packer netrw help qf TelescopePrompt gitcommit"
+local testaustime_ignore = ["packer", "netrw", "help", "qf", "TelescopePrompt", "gitcommit"]
 local testaustime_url = "https://api.testaustime.fi"
 local testaustime_token = ""
 local testaustime_useragent = "testaustime.nvim"
@@ -33,7 +33,7 @@ function sendheartbeat()
 
     local hb = getheartbeatdata()
 
-    for ft in testaustime_ignore:gmatch("%S+") do
+    for ft in testaustime_ignore do
         if ft == hb.language then
             return
         end

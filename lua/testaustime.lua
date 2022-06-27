@@ -55,7 +55,7 @@ function sendflush()
 
     return Job:new({
         command = "curl",
-        args = { "-sX", "POST", "-H", "Authorization: Bearer " .. vim.g.testaustime_token, "-A", testaustime_useragent, url }
+        args = { "-sX", "POST", "-H", "Authorization: Bearer " .. testaustime_token, "-A", testaustime_useragent, url }
     }):start()
 end
 

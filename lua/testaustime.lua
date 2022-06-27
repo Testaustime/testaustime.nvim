@@ -33,7 +33,7 @@ function sendheartbeat()
 
     local hb = getheartbeatdata()
 
-    for ft in testaustime_ignore do
+    for _,ft in ipairs(testaustime_ignore) do
         if ft == hb.language then
             return
         end

@@ -8,15 +8,24 @@ You can use your favourite plugin manager, here's an example for [packer.nvim](h
 ```lua
 use {
     'testaustime/testaustime.nvim', requires = { 'nvim-lua/plenary.nvim' },
-    config = function() require'testaustime' end
+    config = function() require'testaustime'.setup({token = "yourtoken"}) end
 }
 ```
 
-These options are available
+Or you can simply use the plugin here then require and setup it elsewhere in your config
 ```lua
-vim.g.testaustime_url = "https://your.testaustimeinstance.com" -- required
-vim.g.testaustime_token = "YourVerySecretTestaustimeAuthenticationToken" --required
-vim.g.testaustime_useragent = "FunnyUserAgentForBackendHostToLaughAt"
-vim.g.testaustime_ignore = "packer netrw help qf TelescopePrompt gitcommit" -- A space-separated list of ignored filetypes
-vim.g.testaustime_editor_name = "Neovim"
+use {
+    'testaustime/testaustime.nvim', requires = { 'nvim-lua/plenary.nvim' },
+}
+```
+
+## Configuration
+```lua
+require'testaustime'.setup({
+    token = "yourVerySecretTestaustimeAuthenticationToken", --required
+    api_url = "https://your.testaustimeinstance.com",
+    useragent = "FunnyUserAgentForBackendHostToLaughAt",
+    ignored_filetypes = ["packer", "netrw", "help", "qf", "TelescopePrompt", "gitcommit"],
+    editor_name = "Neovim",
+})
 ```

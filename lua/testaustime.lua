@@ -75,7 +75,6 @@ function getheartbeatdata()
 
     for _, ignored_project_name in ipairs(testaustime_secret_projects) do
         if root:find(ignored_project_name) ~= nil then
-            print(root, ignored_project_name)
             project_name = "hidden"
         end
     end

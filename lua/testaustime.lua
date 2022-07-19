@@ -5,6 +5,7 @@ local Job = require("plenary.job")
 local last_heartbeat = 0
 
 local testaustime_ignore = {"packer", "netrw", "help", "qf", "TelescopePrompt", "gitcommit"}
+local testaustime_secret_projects = {}
 local testaustime_url = "https://api.testaustime.fi"
 local testaustime_token = ""
 local testaustime_useragent = "testaustime.nvim"
@@ -70,11 +71,20 @@ function getheartbeatdata()
         root = git_root_name
     end
 
+    local project_name = root:match("/([^/]+)$")
+
+    for _, ignored_project_name in ipairs(testaustime_secret_projects) do
+        if root:find(ignored_project_name) ~= nil then
+            print(root, ignored_project_name)
+            project_name = "hidden"
+        end
+    end
+
     return {
         language = vim.bo.filetype,
         hostname = vim.fn.hostname(),
         editor_name = vim.g.testaustime_editor_name or "Neovim",
-        project_name = root:match("/([^/]+)$")
+        project_name = project_name
     }
 end
 
@@ -92,6 +102,7 @@ function M.setup(userconfig)
     testaustime_token = assert(userconfig.token, "Missing api token for testaustime")
     testaustime_useragent = userconfig.useragent or testaustime_useragent
     testaustime_editor_name = userconfig.editor_name or testaustime_editor_name
+    testaustime_secret_projects = userconfig.secret_projects or testaustime_secret_projects
     vim.api.nvim_create_autocmd({ "CursorMoved" }, { callback = sendheartbeat })
     vim.api.nvim_create_autocmd({ "ExitPre" }, { callback = sendflush })
 end

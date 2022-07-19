@@ -23,9 +23,11 @@ use {
 These are all the available configuration options currently:
 ```lua
 require'testaustime'.setup({
-    token = "yourVerySecretTestaustimeAuthenticationToken", --required
+    token = "yourVerySecretTestaustimeAuthenticationToken", -- Required
     api_url = "https://your.testaustimeinstance.com",
     useragent = "FunnyUserAgentForBackendHostToLaughAt",
+    -- When project path includes a string in secret_projects list, it's project name gets replaced with "hidden"
+    secret_projects = {"mysecretproject"}, 
     ignored_filetypes = {"packer", "netrw", "help", "qf", "TelescopePrompt", "gitcommit"},
     editor_name = "Neovim",
 })

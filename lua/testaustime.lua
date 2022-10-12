@@ -10,6 +10,7 @@ local testaustime_url = "https://api.testaustime.fi"
 local testaustime_token = ""
 local testaustime_useragent = "testaustime.nvim"
 local testaustime_editor_name = "Neovim"
+local testaustime_hostname = vim.fn.hostname()
 
 ---@return string
 function git_root()
@@ -62,13 +63,10 @@ end
 
 ---@return table
 function getheartbeatdata()
-    local git_root_name = git_root()
-    local root = ""
+    local root = git_root()
 
-    if git_root_name == "" then
+    if root == "" then
         root = vim.fn.getcwd()
-    else
-        root = git_root_name
     end
 
     local project_name = root:match("/([^/]+)$")
@@ -81,7 +79,7 @@ function getheartbeatdata()
 
     return {
         language = vim.bo.filetype,
-        hostname = vim.fn.hostname(),
+        hostname = testaustime_hostname,
         editor_name = vim.g.testaustime_editor_name or "Neovim",
         project_name = project_name
     }
@@ -102,6 +100,7 @@ function M.setup(userconfig)
     testaustime_useragent = userconfig.useragent or testaustime_useragent
     testaustime_editor_name = userconfig.editor_name or testaustime_editor_name
     testaustime_secret_projects = userconfig.secret_projects or testaustime_secret_projects
+    testaustime_hostname = userconfig.hostname or testaustime_hostname
     vim.api.nvim_create_autocmd({ "CursorMoved" }, { callback = sendheartbeat })
     vim.api.nvim_create_autocmd({ "ExitPre" }, { callback = sendflush })
 end

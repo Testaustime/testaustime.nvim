@@ -72,7 +72,7 @@ function getheartbeatdata()
     local project_name = root:match("/([^/]+)$")
 
     for _, ignored_project_name in ipairs(testaustime_secret_projects) do
-        if root:find(ignored_project_name) ~= nil then
+        if root:find(ignored_project_name, 1, true) ~= nil then
             project_name = "hidden"
         end
     end

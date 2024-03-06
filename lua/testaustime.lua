@@ -35,6 +35,10 @@ function sendheartbeat()
 
     local hb = getheartbeatdata()
 
+    if vim.fn.buflisted(vim.fn.bufnr("%")) == 0 then
+        return
+    end
+
     for _,ft in ipairs(testaustime_ignore) do
         if ft == hb.language then
             return
